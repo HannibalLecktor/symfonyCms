@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen">
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+        {% block content %}
+            <div class="span2 col-lg-2" style="padding: 8px 0;">
+                {% block sonata_profile_menu %}
+                    {{ sonata_block_render({'type': 'sonata.user.block.menu'}, {'current_uri': app.request.requestUri}) }}
+                {% endblock %}
+            </div>
+        {% endblock %}
+        {% block hwi_oauth_content %}
+            {% if error is defined and error %}
+                <span>{{ error }}</span>
+            {% endif %}
+            {% for owner in hwi_oauth_resource_owners() %}
+                <a href="{{ hwi_oauth_login_url(owner) }}">{{ owner | trans({}, 'HWIOAuthBundle') }}</a> <br />
+            {% endfor %}
+        {% endblock hwi_oauth_content %}
+        {% block javascripts %}{% endblock %}
+        <!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
+        <script src="{{ asset('js/jquery_jquery.min_1.js') }}"></script>
+        <!-- Include all JavaScripts, compiled by Assetic -->
+        <script src="{{ asset('js/bootstrap.js') }}"></script>
+    </body>
+</html>

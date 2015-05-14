@@ -1,0 +1,800 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: acl_classes; Type: TABLE; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE TABLE acl_classes (
+    id integer NOT NULL,
+    class_type character varying(200) NOT NULL
+);
+
+
+ALTER TABLE public.acl_classes OWNER TO symfony_cms;
+
+--
+-- Name: acl_classes_id_seq; Type: SEQUENCE; Schema: public; Owner: symfony_cms
+--
+
+CREATE SEQUENCE acl_classes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.acl_classes_id_seq OWNER TO symfony_cms;
+
+--
+-- Name: acl_classes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: symfony_cms
+--
+
+ALTER SEQUENCE acl_classes_id_seq OWNED BY acl_classes.id;
+
+
+--
+-- Name: acl_entries; Type: TABLE; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE TABLE acl_entries (
+    id integer NOT NULL,
+    class_id integer NOT NULL,
+    object_identity_id integer,
+    security_identity_id integer NOT NULL,
+    field_name character varying(50) DEFAULT NULL::character varying,
+    ace_order smallint NOT NULL,
+    mask integer NOT NULL,
+    granting boolean NOT NULL,
+    granting_strategy character varying(30) NOT NULL,
+    audit_success boolean NOT NULL,
+    audit_failure boolean NOT NULL
+);
+
+
+ALTER TABLE public.acl_entries OWNER TO symfony_cms;
+
+--
+-- Name: acl_entries_id_seq; Type: SEQUENCE; Schema: public; Owner: symfony_cms
+--
+
+CREATE SEQUENCE acl_entries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.acl_entries_id_seq OWNER TO symfony_cms;
+
+--
+-- Name: acl_entries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: symfony_cms
+--
+
+ALTER SEQUENCE acl_entries_id_seq OWNED BY acl_entries.id;
+
+
+--
+-- Name: acl_object_identities; Type: TABLE; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE TABLE acl_object_identities (
+    id integer NOT NULL,
+    parent_object_identity_id integer,
+    class_id integer NOT NULL,
+    object_identifier character varying(100) NOT NULL,
+    entries_inheriting boolean NOT NULL
+);
+
+
+ALTER TABLE public.acl_object_identities OWNER TO symfony_cms;
+
+--
+-- Name: acl_object_identities_id_seq; Type: SEQUENCE; Schema: public; Owner: symfony_cms
+--
+
+CREATE SEQUENCE acl_object_identities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.acl_object_identities_id_seq OWNER TO symfony_cms;
+
+--
+-- Name: acl_object_identities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: symfony_cms
+--
+
+ALTER SEQUENCE acl_object_identities_id_seq OWNED BY acl_object_identities.id;
+
+
+--
+-- Name: acl_object_identity_ancestors; Type: TABLE; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE TABLE acl_object_identity_ancestors (
+    object_identity_id integer NOT NULL,
+    ancestor_id integer NOT NULL
+);
+
+
+ALTER TABLE public.acl_object_identity_ancestors OWNER TO symfony_cms;
+
+--
+-- Name: acl_security_identities; Type: TABLE; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE TABLE acl_security_identities (
+    id integer NOT NULL,
+    identifier character varying(200) NOT NULL,
+    username boolean NOT NULL
+);
+
+
+ALTER TABLE public.acl_security_identities OWNER TO symfony_cms;
+
+--
+-- Name: acl_security_identities_id_seq; Type: SEQUENCE; Schema: public; Owner: symfony_cms
+--
+
+CREATE SEQUENCE acl_security_identities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.acl_security_identities_id_seq OWNER TO symfony_cms;
+
+--
+-- Name: acl_security_identities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: symfony_cms
+--
+
+ALTER SEQUENCE acl_security_identities_id_seq OWNED BY acl_security_identities.id;
+
+
+--
+-- Name: fos_user_group; Type: TABLE; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE TABLE fos_user_group (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    roles text NOT NULL
+);
+
+
+ALTER TABLE public.fos_user_group OWNER TO symfony_cms;
+
+--
+-- Name: COLUMN fos_user_group.roles; Type: COMMENT; Schema: public; Owner: symfony_cms
+--
+
+COMMENT ON COLUMN fos_user_group.roles IS '(DC2Type:array)';
+
+
+--
+-- Name: fos_user_group_id_seq; Type: SEQUENCE; Schema: public; Owner: symfony_cms
+--
+
+CREATE SEQUENCE fos_user_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.fos_user_group_id_seq OWNER TO symfony_cms;
+
+--
+-- Name: fos_user_user; Type: TABLE; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE TABLE fos_user_user (
+    id integer NOT NULL,
+    username character varying(255) NOT NULL,
+    username_canonical character varying(255) NOT NULL,
+    email character varying(255) NOT NULL,
+    email_canonical character varying(255) NOT NULL,
+    enabled boolean NOT NULL,
+    salt character varying(255) NOT NULL,
+    password character varying(255) NOT NULL,
+    last_login timestamp(0) without time zone DEFAULT NULL::timestamp without time zone,
+    locked boolean NOT NULL,
+    expired boolean NOT NULL,
+    expires_at timestamp(0) without time zone DEFAULT NULL::timestamp without time zone,
+    confirmation_token character varying(255) DEFAULT NULL::character varying,
+    password_requested_at timestamp(0) without time zone DEFAULT NULL::timestamp without time zone,
+    roles text NOT NULL,
+    credentials_expired boolean NOT NULL,
+    credentials_expire_at timestamp(0) without time zone DEFAULT NULL::timestamp without time zone,
+    created_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL,
+    date_of_birth timestamp(0) without time zone DEFAULT NULL::timestamp without time zone,
+    firstname character varying(64) DEFAULT NULL::character varying,
+    lastname character varying(64) DEFAULT NULL::character varying,
+    website character varying(64) DEFAULT NULL::character varying,
+    biography character varying(255) DEFAULT NULL::character varying,
+    gender character varying(1) DEFAULT NULL::character varying,
+    locale character varying(8) DEFAULT NULL::character varying,
+    timezone character varying(64) DEFAULT NULL::character varying,
+    phone character varying(64) DEFAULT NULL::character varying,
+    facebook_uid character varying(255) DEFAULT NULL::character varying,
+    facebook_name character varying(255) DEFAULT NULL::character varying,
+    facebook_data text,
+    twitter_uid character varying(255) DEFAULT NULL::character varying,
+    twitter_name character varying(255) DEFAULT NULL::character varying,
+    twitter_data text,
+    gplus_uid character varying(255) DEFAULT NULL::character varying,
+    gplus_name character varying(255) DEFAULT NULL::character varying,
+    gplus_data text,
+    token character varying(255) DEFAULT NULL::character varying,
+    two_step_code character varying(255) DEFAULT NULL::character varying
+);
+
+
+ALTER TABLE public.fos_user_user OWNER TO symfony_cms;
+
+--
+-- Name: COLUMN fos_user_user.roles; Type: COMMENT; Schema: public; Owner: symfony_cms
+--
+
+COMMENT ON COLUMN fos_user_user.roles IS '(DC2Type:array)';
+
+
+--
+-- Name: COLUMN fos_user_user.facebook_data; Type: COMMENT; Schema: public; Owner: symfony_cms
+--
+
+COMMENT ON COLUMN fos_user_user.facebook_data IS '(DC2Type:json)';
+
+
+--
+-- Name: COLUMN fos_user_user.twitter_data; Type: COMMENT; Schema: public; Owner: symfony_cms
+--
+
+COMMENT ON COLUMN fos_user_user.twitter_data IS '(DC2Type:json)';
+
+
+--
+-- Name: COLUMN fos_user_user.gplus_data; Type: COMMENT; Schema: public; Owner: symfony_cms
+--
+
+COMMENT ON COLUMN fos_user_user.gplus_data IS '(DC2Type:json)';
+
+
+--
+-- Name: fos_user_user_group; Type: TABLE; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE TABLE fos_user_user_group (
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE public.fos_user_user_group OWNER TO symfony_cms;
+
+--
+-- Name: fos_user_user_id_seq; Type: SEQUENCE; Schema: public; Owner: symfony_cms
+--
+
+CREATE SEQUENCE fos_user_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.fos_user_user_id_seq OWNER TO symfony_cms;
+
+--
+-- Name: is_user; Type: TABLE; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE TABLE is_user (
+    id integer NOT NULL,
+    username character varying(255) NOT NULL,
+    username_canonical character varying(255) NOT NULL,
+    email character varying(255) NOT NULL,
+    email_canonical character varying(255) NOT NULL,
+    enabled boolean NOT NULL,
+    salt character varying(255) NOT NULL,
+    password character varying(255) NOT NULL,
+    last_login timestamp(0) without time zone DEFAULT NULL::timestamp without time zone,
+    locked boolean NOT NULL,
+    expired boolean NOT NULL,
+    expires_at timestamp(0) without time zone DEFAULT NULL::timestamp without time zone,
+    confirmation_token character varying(255) DEFAULT NULL::character varying,
+    password_requested_at timestamp(0) without time zone DEFAULT NULL::timestamp without time zone,
+    roles text NOT NULL,
+    credentials_expired boolean NOT NULL,
+    credentials_expire_at timestamp(0) without time zone DEFAULT NULL::timestamp without time zone
+);
+
+
+ALTER TABLE public.is_user OWNER TO symfony_cms;
+
+--
+-- Name: COLUMN is_user.roles; Type: COMMENT; Schema: public; Owner: symfony_cms
+--
+
+COMMENT ON COLUMN is_user.roles IS '(DC2Type:array)';
+
+
+--
+-- Name: is_user_id_seq; Type: SEQUENCE; Schema: public; Owner: symfony_cms
+--
+
+CREATE SEQUENCE is_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.is_user_id_seq OWNER TO symfony_cms;
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: symfony_cms
+--
+
+ALTER TABLE ONLY acl_classes ALTER COLUMN id SET DEFAULT nextval('acl_classes_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: symfony_cms
+--
+
+ALTER TABLE ONLY acl_entries ALTER COLUMN id SET DEFAULT nextval('acl_entries_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: symfony_cms
+--
+
+ALTER TABLE ONLY acl_object_identities ALTER COLUMN id SET DEFAULT nextval('acl_object_identities_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: symfony_cms
+--
+
+ALTER TABLE ONLY acl_security_identities ALTER COLUMN id SET DEFAULT nextval('acl_security_identities_id_seq'::regclass);
+
+
+--
+-- Data for Name: acl_classes; Type: TABLE DATA; Schema: public; Owner: symfony_cms
+--
+
+COPY acl_classes (id, class_type) FROM stdin;
+\.
+
+
+--
+-- Name: acl_classes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: symfony_cms
+--
+
+SELECT pg_catalog.setval('acl_classes_id_seq', 1, false);
+
+
+--
+-- Data for Name: acl_entries; Type: TABLE DATA; Schema: public; Owner: symfony_cms
+--
+
+COPY acl_entries (id, class_id, object_identity_id, security_identity_id, field_name, ace_order, mask, granting, granting_strategy, audit_success, audit_failure) FROM stdin;
+\.
+
+
+--
+-- Name: acl_entries_id_seq; Type: SEQUENCE SET; Schema: public; Owner: symfony_cms
+--
+
+SELECT pg_catalog.setval('acl_entries_id_seq', 1, false);
+
+
+--
+-- Data for Name: acl_object_identities; Type: TABLE DATA; Schema: public; Owner: symfony_cms
+--
+
+COPY acl_object_identities (id, parent_object_identity_id, class_id, object_identifier, entries_inheriting) FROM stdin;
+\.
+
+
+--
+-- Name: acl_object_identities_id_seq; Type: SEQUENCE SET; Schema: public; Owner: symfony_cms
+--
+
+SELECT pg_catalog.setval('acl_object_identities_id_seq', 1, false);
+
+
+--
+-- Data for Name: acl_object_identity_ancestors; Type: TABLE DATA; Schema: public; Owner: symfony_cms
+--
+
+COPY acl_object_identity_ancestors (object_identity_id, ancestor_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: acl_security_identities; Type: TABLE DATA; Schema: public; Owner: symfony_cms
+--
+
+COPY acl_security_identities (id, identifier, username) FROM stdin;
+\.
+
+
+--
+-- Name: acl_security_identities_id_seq; Type: SEQUENCE SET; Schema: public; Owner: symfony_cms
+--
+
+SELECT pg_catalog.setval('acl_security_identities_id_seq', 1, false);
+
+
+--
+-- Data for Name: fos_user_group; Type: TABLE DATA; Schema: public; Owner: symfony_cms
+--
+
+COPY fos_user_group (id, name, roles) FROM stdin;
+\.
+
+
+--
+-- Name: fos_user_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: symfony_cms
+--
+
+SELECT pg_catalog.setval('fos_user_group_id_seq', 1, false);
+
+
+--
+-- Data for Name: fos_user_user; Type: TABLE DATA; Schema: public; Owner: symfony_cms
+--
+
+COPY fos_user_user (id, username, username_canonical, email, email_canonical, enabled, salt, password, last_login, locked, expired, expires_at, confirmation_token, password_requested_at, roles, credentials_expired, credentials_expire_at, created_at, updated_at, date_of_birth, firstname, lastname, website, biography, gender, locale, timezone, phone, facebook_uid, facebook_name, facebook_data, twitter_uid, twitter_name, twitter_data, gplus_uid, gplus_name, gplus_data, token, two_step_code) FROM stdin;
+1	admin	admin	fans05@rambler.ru	fans05@rambler.ru	t	5gea9lzxbw088gcw0o8ggc4goscwgs8	4X+yT9sVshubNNTGJ4Otaj9u1lWGBoE0kTSQyYKsfWv3h3aPyya3NG0mg5H9o0sDWVyjXj5I4RbNteXsd3G3HQ==	2015-05-07 22:40:02	f	f	\N	\N	\N	a:2:{i:0;s:17:"ROLE_SONATA_ADMIN";i:1;s:10:"ROLE_ADMIN";}	f	\N	2015-03-13 03:22:17	2015-05-07 22:40:02	\N	sdf	sdf	http://fans-site.ru	sdfsdf	m	qu_EC	Africa/Algiers	sdf	\N	\N	null	\N	\N	null	\N	\N	null	\N	\N
+2	company	company	fans7288@gmail.com	fans7288@gmail.com	t	87hqg9l3iaskw4c8oc8wwk00c4cs4sg	8E6uRhwmEFkiBhvSXsFLgmS278RCMi2A9M6zkn+k9HZqcQr11oxI/uciT1BQuuF+8dUfutFbzW3/kJl+9SQ/9g==	\N	f	f	\N	NRGkChlTA7FbQzXShDyvuomCQETrCQog9uezWVWW4CI	2015-03-18 00:04:27	a:0:{}	f	\N	2015-03-14 04:45:27	2015-03-18 00:04:27	\N	\N	\N	\N	\N	u	\N	\N	\N	\N	\N	null	\N	\N	null	\N	\N	null	\N	\N
+\.
+
+
+--
+-- Data for Name: fos_user_user_group; Type: TABLE DATA; Schema: public; Owner: symfony_cms
+--
+
+COPY fos_user_user_group (user_id, group_id) FROM stdin;
+\.
+
+
+--
+-- Name: fos_user_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: symfony_cms
+--
+
+SELECT pg_catalog.setval('fos_user_user_id_seq', 2, true);
+
+
+--
+-- Data for Name: is_user; Type: TABLE DATA; Schema: public; Owner: symfony_cms
+--
+
+COPY is_user (id, username, username_canonical, email, email_canonical, enabled, salt, password, last_login, locked, expired, expires_at, confirmation_token, password_requested_at, roles, credentials_expired, credentials_expire_at) FROM stdin;
+\.
+
+
+--
+-- Name: is_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: symfony_cms
+--
+
+SELECT pg_catalog.setval('is_user_id_seq', 1, false);
+
+
+--
+-- Name: acl_classes_pkey; Type: CONSTRAINT; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+ALTER TABLE ONLY acl_classes
+    ADD CONSTRAINT acl_classes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: acl_entries_pkey; Type: CONSTRAINT; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+ALTER TABLE ONLY acl_entries
+    ADD CONSTRAINT acl_entries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: acl_object_identities_pkey; Type: CONSTRAINT; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+ALTER TABLE ONLY acl_object_identities
+    ADD CONSTRAINT acl_object_identities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: acl_object_identity_ancestors_pkey; Type: CONSTRAINT; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+ALTER TABLE ONLY acl_object_identity_ancestors
+    ADD CONSTRAINT acl_object_identity_ancestors_pkey PRIMARY KEY (object_identity_id, ancestor_id);
+
+
+--
+-- Name: acl_security_identities_pkey; Type: CONSTRAINT; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+ALTER TABLE ONLY acl_security_identities
+    ADD CONSTRAINT acl_security_identities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: fos_user_group_pkey; Type: CONSTRAINT; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+ALTER TABLE ONLY fos_user_group
+    ADD CONSTRAINT fos_user_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: fos_user_user_group_pkey; Type: CONSTRAINT; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+ALTER TABLE ONLY fos_user_user_group
+    ADD CONSTRAINT fos_user_user_group_pkey PRIMARY KEY (user_id, group_id);
+
+
+--
+-- Name: fos_user_user_pkey; Type: CONSTRAINT; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+ALTER TABLE ONLY fos_user_user
+    ADD CONSTRAINT fos_user_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: is_user_pkey; Type: CONSTRAINT; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+ALTER TABLE ONLY is_user
+    ADD CONSTRAINT is_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: idx_46c8b8063d9ab4a6; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE INDEX idx_46c8b8063d9ab4a6 ON acl_entries USING btree (object_identity_id);
+
+
+--
+-- Name: idx_46c8b806df9183c9; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE INDEX idx_46c8b806df9183c9 ON acl_entries USING btree (security_identity_id);
+
+
+--
+-- Name: idx_46c8b806ea000b10; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE INDEX idx_46c8b806ea000b10 ON acl_entries USING btree (class_id);
+
+
+--
+-- Name: idx_46c8b806ea000b103d9ab4a6df9183c9; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE INDEX idx_46c8b806ea000b103d9ab4a6df9183c9 ON acl_entries USING btree (class_id, object_identity_id, security_identity_id);
+
+
+--
+-- Name: idx_825de2993d9ab4a6; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE INDEX idx_825de2993d9ab4a6 ON acl_object_identity_ancestors USING btree (object_identity_id);
+
+
+--
+-- Name: idx_825de299c671cea1; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE INDEX idx_825de299c671cea1 ON acl_object_identity_ancestors USING btree (ancestor_id);
+
+
+--
+-- Name: idx_9407e54977fa751a; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE INDEX idx_9407e54977fa751a ON acl_object_identities USING btree (parent_object_identity_id);
+
+
+--
+-- Name: idx_b3c77447a76ed395; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE INDEX idx_b3c77447a76ed395 ON fos_user_user_group USING btree (user_id);
+
+
+--
+-- Name: idx_b3c77447fe54d947; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE INDEX idx_b3c77447fe54d947 ON fos_user_user_group USING btree (group_id);
+
+
+--
+-- Name: uniq_1860f86892fc23a8; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE UNIQUE INDEX uniq_1860f86892fc23a8 ON is_user USING btree (username_canonical);
+
+
+--
+-- Name: uniq_1860f868a0d96fbf; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE UNIQUE INDEX uniq_1860f868a0d96fbf ON is_user USING btree (email_canonical);
+
+
+--
+-- Name: uniq_46c8b806ea000b103d9ab4a64def17bce4289bf4; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE UNIQUE INDEX uniq_46c8b806ea000b103d9ab4a64def17bce4289bf4 ON acl_entries USING btree (class_id, object_identity_id, field_name, ace_order);
+
+
+--
+-- Name: uniq_583d1f3e5e237e06; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE UNIQUE INDEX uniq_583d1f3e5e237e06 ON fos_user_group USING btree (name);
+
+
+--
+-- Name: uniq_69dd750638a36066; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE UNIQUE INDEX uniq_69dd750638a36066 ON acl_classes USING btree (class_type);
+
+
+--
+-- Name: uniq_8835ee78772e836af85e0677; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE UNIQUE INDEX uniq_8835ee78772e836af85e0677 ON acl_security_identities USING btree (identifier, username);
+
+
+--
+-- Name: uniq_9407e5494b12ad6ea000b10; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE UNIQUE INDEX uniq_9407e5494b12ad6ea000b10 ON acl_object_identities USING btree (object_identifier, class_id);
+
+
+--
+-- Name: uniq_c560d76192fc23a8; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE UNIQUE INDEX uniq_c560d76192fc23a8 ON fos_user_user USING btree (username_canonical);
+
+
+--
+-- Name: uniq_c560d761a0d96fbf; Type: INDEX; Schema: public; Owner: symfony_cms; Tablespace: 
+--
+
+CREATE UNIQUE INDEX uniq_c560d761a0d96fbf ON fos_user_user USING btree (email_canonical);
+
+
+--
+-- Name: fk_46c8b8063d9ab4a6; Type: FK CONSTRAINT; Schema: public; Owner: symfony_cms
+--
+
+ALTER TABLE ONLY acl_entries
+    ADD CONSTRAINT fk_46c8b8063d9ab4a6 FOREIGN KEY (object_identity_id) REFERENCES acl_object_identities(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: fk_46c8b806df9183c9; Type: FK CONSTRAINT; Schema: public; Owner: symfony_cms
+--
+
+ALTER TABLE ONLY acl_entries
+    ADD CONSTRAINT fk_46c8b806df9183c9 FOREIGN KEY (security_identity_id) REFERENCES acl_security_identities(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: fk_46c8b806ea000b10; Type: FK CONSTRAINT; Schema: public; Owner: symfony_cms
+--
+
+ALTER TABLE ONLY acl_entries
+    ADD CONSTRAINT fk_46c8b806ea000b10 FOREIGN KEY (class_id) REFERENCES acl_classes(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: fk_825de2993d9ab4a6; Type: FK CONSTRAINT; Schema: public; Owner: symfony_cms
+--
+
+ALTER TABLE ONLY acl_object_identity_ancestors
+    ADD CONSTRAINT fk_825de2993d9ab4a6 FOREIGN KEY (object_identity_id) REFERENCES acl_object_identities(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: fk_825de299c671cea1; Type: FK CONSTRAINT; Schema: public; Owner: symfony_cms
+--
+
+ALTER TABLE ONLY acl_object_identity_ancestors
+    ADD CONSTRAINT fk_825de299c671cea1 FOREIGN KEY (ancestor_id) REFERENCES acl_object_identities(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: fk_9407e54977fa751a; Type: FK CONSTRAINT; Schema: public; Owner: symfony_cms
+--
+
+ALTER TABLE ONLY acl_object_identities
+    ADD CONSTRAINT fk_9407e54977fa751a FOREIGN KEY (parent_object_identity_id) REFERENCES acl_object_identities(id);
+
+
+--
+-- Name: fk_b3c77447a76ed395; Type: FK CONSTRAINT; Schema: public; Owner: symfony_cms
+--
+
+ALTER TABLE ONLY fos_user_user_group
+    ADD CONSTRAINT fk_b3c77447a76ed395 FOREIGN KEY (user_id) REFERENCES fos_user_user(id) ON DELETE CASCADE;
+
+
+--
+-- Name: fk_b3c77447fe54d947; Type: FK CONSTRAINT; Schema: public; Owner: symfony_cms
+--
+
+ALTER TABLE ONLY fos_user_user_group
+    ADD CONSTRAINT fk_b3c77447fe54d947 FOREIGN KEY (group_id) REFERENCES fos_user_group(id) ON DELETE CASCADE;
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: fans
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM fans;
+GRANT ALL ON SCHEMA public TO fans;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

@@ -1,0 +1,6 @@
+{% block password_widget %}
+    <div class="password_widget my">
+        {% set type = type|default('passwordsdf') %}
+        {{ block('form_widget_simple') }}
+    </div>
+{% endblock %}
