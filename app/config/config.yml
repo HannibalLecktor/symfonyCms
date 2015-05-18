@@ -137,3 +137,4 @@ hwi_oauth:
             type:                vkontakte
             client_id:           4891978
             client_secret:       3IZswyDPKvLaVp2qZI4S
+            scope: email
