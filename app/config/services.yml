@@ -3,9 +3,9 @@
 parameters:
 #    parameter_name: value
 parameters:
-    my_user_provider.class: InfoSteel\UserBundle\Controller\UserProvider
+    my_user_provider.class: InfoSteel\UserBundle\Security\Core\User\UserProvider
 
 services:
     my_user_provider:
         class: "%my_user_provider.class%"
-        arguments: [@fos_user.user_manager,{facebook: facebook_id, google: google_id, vkontakte: vkontakte_id}]
+        arguments: [@fos_user.user_manager,{vkontakte: vkontakte_id}]

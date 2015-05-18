@@ -1,6 +1,6 @@
 <?php
 
-namespace InfoSteel\UserBundle\Controller;
+namespace InfoSteel\UserBundle\Security\Core\User;
 
 use HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface;
 use HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider as BaseClass;
