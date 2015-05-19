@@ -34,4 +34,10 @@ class User extends BaseUser
      * @ORM\Column(name="vkontakte_access_token", type="string", length=225, nullable=true)
      */
     protected $vkontakte_access_token;
+
+    /** @ORM\Column(name="facebook_id", type="string", length=255, nullable=true) */
+    protected $facebook_id;
+
+    /** @ORM\Column(name="facebook_access_token", type="string", length=255, nullable=true) */
+    protected $facebook_access_token;
 }
