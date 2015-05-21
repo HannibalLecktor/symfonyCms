@@ -44,7 +44,7 @@ security:
                 check_path: /login
                 provider: fos_userbundle
                 oauth_user_provider:
-                    service: hwi_oauth.user.provider.fosub_bridge
+                    service: my_user_provider
             logout:
                 path: /logout
                 target: /connect
