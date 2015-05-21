@@ -42,7 +42,6 @@ security:
                 use_forward: false
                 failure_path: /login
                 check_path: /login
-                provider: fos_userbundle
                 oauth_user_provider:
                     service: my_user_provider
             logout:
