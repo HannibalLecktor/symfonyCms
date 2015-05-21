@@ -3,7 +3,7 @@
 parameters:
 #    parameter_name: value
 parameters:
-    my_user_provider.class: InfoSteel\AppBundle\Security\Core\User\FOSUBUserProvider
+    my_user_provider.class: Application\Sonata\UserBundle\Security\Core\User\SonataUserProvider
 
 services:
     my_user_provider:
