@@ -72,7 +72,13 @@ doctrine:
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
-        auto_mapping: true
+        entity_managers:
+            default:
+                auto_mapping: true
+                mappings:
+                    ApplicationSonataUserBundle: ~
+                    SonataUserBundle: ~
+                    FOSUserBundle: ~
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -98,7 +104,11 @@ sonata_block:
 fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
-    user_class: Application\Sonata\UserBundle\Entity\User
+    user_class: InfoSteel\AppBundle\Entity\User
+
+    registration:
+        confirmation:
+            enabled: false
 
     group:
         group_class:   Application\Sonata\UserBundle\Entity\Group
@@ -124,13 +134,14 @@ sonata_user:
 
 hwi_oauth:
     connect:
-        account_connector: my_user_provider
+        confirmation: true
+#        account_connector: my_user_provider
     firewall_name: main
     fosub:
         username_iterations: 30
         properties:
             facebook: facebook_id
-#            google: google_id
+            google: google_id
             vkontakte: vkontakte_id
     resource_owners:
         vkontakte:
