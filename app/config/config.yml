@@ -148,10 +148,11 @@ hwi_oauth:
             type:                vkontakte
             client_id:           4891978
             client_secret:       3IZswyDPKvLaVp2qZI4S
-            scope: email
+            scope:               "email"
         facebook:
             type:                facebook
             client_id:           879036738827928
             client_secret:       c7037ce0c5b79fc9f4e923ae1dab154e
+            scope:               "email"
             options:
                 display: popup
