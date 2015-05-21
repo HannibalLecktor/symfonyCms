@@ -2,10 +2,10 @@
 # http://symfony.com/doc/current/book/service_container.html
 parameters:
 #    parameter_name: value
-#parameters:
-#    my_user_provider.class: InfoSteel\UserBundle\Security\Core\User\UserProvider
+parameters:
+    my_user_provider.class: InfoSteel\AppBundle\Security\Core\User\FOSUBUserProvider
 
 #services:
-#    my_user_provider:
-#        class: "%my_user_provider.class%"
-#        arguments: [@fos_user.user_manager,{vkontakte: vkontakte_id}]
+    my_user_provider:
+        class: "%my_user_provider.class%"
+        arguments: [@fos_user.user_manager,{vkontakte: vkontakte_id, facebook: facebook_id}]
