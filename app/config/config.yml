@@ -104,7 +104,7 @@ sonata_block:
 fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
-    user_class: InfoSteel\AppBundle\Entity\User
+    user_class: Application\Sonata\UserBundle\Entity\User
 
     registration:
         confirmation:
