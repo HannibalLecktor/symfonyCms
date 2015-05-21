@@ -35,7 +35,7 @@ sonata_user:
     resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
     prefix: /admin
 
-hwi_oauth_login:
+hwi_oauth_secutity:
     resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
     prefix: /login
 
