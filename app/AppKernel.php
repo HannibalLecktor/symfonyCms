@@ -29,7 +29,6 @@ class AppKernel extends Kernel
             new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
             new InfoSteel\AppBundle\InfoSteelAppBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
-            //new InfoSteel\UserBundle\InfoSteelUserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

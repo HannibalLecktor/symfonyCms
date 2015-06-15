@@ -20,6 +20,8 @@ class SonataUserProvider extends BaseClass
      */
     public function connect(UserInterface $user, UserResponseInterface $response)
     {
+        var_dump($response);
+        die();
         $property = $this->getProperty($response);
         $username = $response->getUsername();
 

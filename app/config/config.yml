@@ -131,6 +131,9 @@ sonata_user:
     google_authenticator:
         enabled: true
         server:  127.0.0.1
+    class:
+        user: Application\Sonata\UserBundle\Entity\User
+        group: Application\Sonata\UserBundle\Entity\Group
 
 hwi_oauth:
     connect:

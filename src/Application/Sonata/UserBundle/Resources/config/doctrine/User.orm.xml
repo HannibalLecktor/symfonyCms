@@ -5,11 +5,13 @@
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <entity name="Application\Sonata\UserBundle\Entity\User" table="fos_user_user">
-
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO" />
         </id>
-
+        <field name="facebook_id"     type="string"     column="facebook_id"  length="255"    nullable="true" />
+        <field name="facebook_access_token"    type="string"     column="facebook_access_token"  length="255"    nullable="true" />
+        <field name="vkontakte_id"     type="string"     column="vkontakte_id"  length="255"    nullable="true" />
+        <field name="vkontakte_access_token"    type="string"     column="vkontakte_access_token"  length="255"    nullable="true" />
     </entity>
 
 </doctrine-mapping>
