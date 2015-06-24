@@ -27,6 +27,8 @@ class User extends BaseUser
 
     protected $vkontakte_access_token;
 
+	protected $profile_image;
+
     /**
      * Get id
      *
@@ -127,4 +129,28 @@ class User extends BaseUser
     {
         return $this->vkontakte_access_token;
     }
+
+	/**
+	 * Set profile_image
+	 *
+	 * @param string $profileImage
+	 * @return User
+	 */
+	public function setProfileImage($profileImage)
+	{
+		$this->profile_image = $profileImage;
+
+		return $this;
+	}
+
+	/**
+	 * Get profile_image
+	 *
+	 * @return string
+	 */
+	public function getProfileImage()
+	{
+		return $this->profile_image;
+	}
+	
 }
